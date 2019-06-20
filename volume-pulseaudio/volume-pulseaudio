@@ -43,7 +43,7 @@ while getopts F:Sf:adH:M:L:X:T:t:C:c:i:m:s:h opt; do
         t) AUDIO_LOW_THRESH="$OPTARG" ;;
         C) DEFAULT_COLOR="$OPTARG" ;;
         c) MUTED_COLOR="$OPTARG" ;;
-        i) AUDIO_INTERVAL="$OPTARG" ;;
+        i) AUDIO_DELTA="$OPTARG" ;;
         m) MIXER="$OPTARG" ;;
         s) SCONTROL="$OPTARG" ;;
         h) printf \
@@ -106,11 +106,13 @@ function set_default_playback_device_next {
 }
 
 case "$BLOCK_BUTTON" in
-    1) set_default_playback_device_next ;;
+#    1) set_default_playback_device_next ;;
     2) amixer -q -D $MIXER sset $SCONTROL $CAPABILITY toggle ;;
-    3) set_default_playback_device_next -1 ;;
-    4) amixer -q -D $MIXER sset $SCONTROL $CAPABILITY $AUDIO_DELTA%+ ;;
-    5) amixer -q -D $MIXER sset $SCONTROL $CAPABILITY $AUDIO_DELTA%- ;;
+#    3) set_default_playback_device_next -1 ;;
+#    4) amixer -q -D $MIXER sset $SCONTROL $CAPABILITY $AUDIO_DELTA%+ ;;
+#    5) amixer -q -D $MIXER sset $SCONTROL $CAPABILITY $AUDIO_DELTA%- ;;
+     4) pactl set-sink-volume 1 +$AUDIO_DELTA% ;;
+     5) pactl set-sink-volume 1 -$AUDIO_DELTA% ;;
 esac
 
 function print_format {
